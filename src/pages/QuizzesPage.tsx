@@ -693,4 +693,4 @@ export function QuizzesPage() {
       )}
     </main>
   );
-                                  }
+}
