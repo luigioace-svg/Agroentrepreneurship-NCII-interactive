@@ -37,7 +37,7 @@ function useTimer() {
 // ─────────────────────────────────────────────
 function QuizModal({ categoryId, difficulty, onClose }: { categoryId: string; difficulty?: Difficulty; onClose: () => void }) {
   const { language } = useLanguage();
-  const { saveQuizResult } = useProgress();
+  const { saveQuizResult, addStudyTime } = useProgress();
   // Map difficult/expert to hard since quizData only has easy/medium/hard
   const effectiveDifficulty = (difficulty === 'difficult' || difficulty === 'expert') ? 'hard' : difficulty;
   // Pull from ALL categories filtered by difficulty
@@ -74,6 +74,7 @@ function QuizModal({ categoryId, difficulty, onClose }: { categoryId: string; di
         const correct = Object.entries({ ...answers, [currentIdx]: optionIdx })
           .filter(([idx, ans]) => questions[Number(idx)].correctAnswer === ans).length;
         saveQuizResult({ category: categoryId, score: correct, total: questions.length, time: seconds, date: new Date().toISOString() });
+addStudyTime(seconds);
       }
     }, 1800);
   }, [revealed, selectedAnswer, currentIdx, questions, answers, categoryId, seconds]);
