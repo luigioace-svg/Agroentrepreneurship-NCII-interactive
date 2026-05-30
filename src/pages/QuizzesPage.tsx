@@ -674,7 +674,7 @@ export function QuizzesPage() {
 
       {/* Active Game Modals */}
       {activeGame?.type === 'quiz' && activeGame.categoryId && (
-        <QuizModal categoryId={activeGame.categoryId} onClose={closeAll} />
+        <QuizModal categoryId={activeGame.categoryId} difficulty={activeGame.difficulty} onClose={closeAll} />
       )}
       {activeGame?.type === 'flashcard' && (
         <FlashcardGame difficulty={activeGame.difficulty} onClose={closeAll} />
