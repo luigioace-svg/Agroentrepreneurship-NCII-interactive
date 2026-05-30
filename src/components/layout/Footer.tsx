@@ -74,8 +74,13 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Bottom */}
+          {/* Disclaimer */}
           <div className="mt-8 pt-6 border-t border-sage/20 text-center">
+            <p className="text-yellow-400/80 text-xs font-medium mb-3">
+              ⚠️ This is an independent study tool and is NOT an official TESDA product.
+              It is not affiliated with, endorsed by, or connected to TESDA in any way.
+              All content is based on publicly available TESDA training regulations for educational purposes only.
+            </p>
             <p className="text-leaf/60 text-sm">{t('footer.credit')}</p>
             <p className="text-leaf/40 text-xs mt-2">{t('footer.copyright')}</p>
           </div>
