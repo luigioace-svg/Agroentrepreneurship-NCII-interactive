@@ -8,7 +8,7 @@ import { enumerationData } from '@/data/enumerationData';
 import { computationData } from '@/data/computationData';
 import { memoryData } from '@/data/memoryData';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { X, Clock, CheckCircle, XCircle } from 'lucide-react';
+import { X, Clock, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -35,11 +35,11 @@ function useTimer() {
 // ─────────────────────────────────────────────
 // MULTIPLE CHOICE MODAL (existing, kept intact)
 // ─────────────────────────────────────────────
-function QuizModal({ categoryId: string; difficulty?: Difficulty; onClose: () => void }
+function QuizModal({ categoryId, difficulty, onClose }: { categoryId: string; difficulty?: Difficulty; onClose: () => void }) {
   const { language } = useLanguage();
   const { saveQuizResult } = useProgress();
   const category = quizCategories.find(c => c.id === categoryId);
-  const questions = (category?.questions || []).filter((q: any) => !difficulty || q.difficulty === difficulty)
+  const questions = (category?.questions || []).filter((q: any) => !difficulty || q.difficulty === difficulty);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<Record<number, number>>({});
