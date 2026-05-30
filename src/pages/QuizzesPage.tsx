@@ -475,77 +475,89 @@ function ComputationGame({ difficulty, onClose }: { difficulty: Difficulty; onCl
 // ─────────────────────────────────────────────
 // MEMORY CARD GAME
 // ─────────────────────────────────────────────
-function MemoryGame({ difficulty, onClose }: { difficulty: Difficulty; onClose: () => void }) {
-  const pairs = memoryData.filter(m => m.difficulty === difficulty).slice(0, 8);
-  const [cards, setCards] = useState(() => {
-    const deck = [...pairs.map(p => ({ ...p, type: 'term' as const })), ...pairs.map(p => ({ ...p, type: 'def' as const }))];
-    return deck.sort(() => Math.random() - 0.5).map((c, i) => ({ ...c, id: i, flipped: false, matched: false }));
-  });
-  const [selected, setSelected] = useState<number[]>([]);
-  const [moves, setMoves] = useState(0);
+  function ComputationGame({ difficulty, onClose }: { difficulty: Difficulty; onClose: () => void }) {
+  const questions = computationData.filter(c => c.difficulty === difficulty);
+  const [idx, setIdx] = useState(0);
+  const [input, setInput] = useState();
+  const [revealed, setRevealed] = useState(false);
+  const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const { seconds, start, stop, format } = useTimer();
+  
   useEffect(() => { start(); }, []);
-
-  const flip = (id: number) => {
-    if (selected.length === 2) return;
-    const card = cards.find(c => c.id === id);
-    if (!card || card.flipped || card.matched) return;
-    const newCards = cards.map(c => c.id === id ? { ...c, flipped: true } : c);
-    setCards(newCards);
-    const newSelected = [...selected, id];
-    setSelected(newSelected);
-    if (newSelected.length === 2) {
-      setMoves(m => m + 1);
-      const [a, b] = newSelected.map(sid => newCards.find(c => c.id === sid)!);
-      if (a.term === b.term && a.type !== b.type) {
-        const matched = newCards.map(c => newSelected.includes(c.id) ? { ...c, matched: true } : c);
-        setCards(matched);
-        setSelected([]);
-        if (matched.every(c => c.matched)) { setDone(true); stop(); }
-      } else {
-        setTimeout(() => {
-          setCards(prev => prev.map(c => newSelected.includes(c.id) ? { ...c, flipped: false } : c));
-          setSelected([]);
-        }, 1000);
-      }
-    }
+  
+  const current = questions[idx];
+  
+  const check = () => {
+    setRevealed(true);
+    const userVal = parseFloat(input.replace(/,/g, ''));
+    if (Math.abs(userVal - current.answer) < 0.01) setScore(s => s + 1);
   };
-
+  
+  const next = () => {
+    setRevealed(false);
+    setInput('');
+    if (idx < questions.length - 1) setIdx(idx + 1);
+    else { setDone(true); stop(); }
+  };
+  
+  const isCorrect = revealed && Math.abs(parseFloat(input.replace(/,/g, '')) - current?.answer) < 0.01;
+  
+  if (!current) return null;
+  
   return (
     <div className="fixed inset-0 z-50 bg-forest/95 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between px-6 py-4 border-b border-mist">
-          <span className="text-sage text-sm">Moves: {moves} | Matched: {cards.filter(c => c.matched).length / 2}/{pairs.length}</span>
+          <span className="text-sage text-sm">Problem {idx + 1}/{questions.length}</span>
           <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1 text-terracotta text-sm font-semibold"><Clock className="w-4 h-4" />{format(seconds)}</span>
+            <span className="flex items-center gap-1 text-terracotta text-sm font-semibold">
+              <Clock className="w-4 h-4" />{format(seconds)}
+            </span>
             <button onClick={onClose}><X className="w-5 h-5 text-earth/60" /></button>
           </div>
         </div>
         {!done ? (
-          <div className="p-4 grid grid-cols-4 gap-3">
-            {cards.map(card => (
-              <button key={card.id} onClick={() => flip(card.id)}
-                className={`aspect-square rounded-xl text-xs font-medium p-2 transition-all border-2 ${
-                  card.matched ? 'bg-green-100 border-green-400 text-green-800' :
-                  card.flipped ? 'bg-sage text-white border-sage' :
-                  'bg-forest text-forest border-forest hover:border-gold'
-                }`}>
-                {card.flipped || card.matched ? (
-                  <span className="text-center leading-tight">{card.type === 'term' ? card.term : card.definition}</span>
-                ) : (
-                  <span className="text-gold text-xl">🌾</span>
-                )}
+          <div className="p-6">
+            <div className="bg-mist rounded-xl p-5 mb-5">
+              <p className="text-forest font-semibold text-base leading-relaxed">{current?.question}</p>
+            </div>
+            {current?.hint && <p className="text-earth/60 text-sm mb-4 italic">Hint: {current.hint}</p>}
+            <div className="mb-5">
+              <label className="block text-forest text-sm font-medium mb-2">Your Answer:</label>
+              <input type="number" value={input} onChange={e => setInput(e.target.value)} disabled={revealed}
+                placeholder="Enter your answer..."
+                className={`w-full border-2 rounded-lg px-4 py-3 text-lg font-semibold outline-none transition-all ${
+                  revealed ? isCorrect ? 'border-green-500 bg-green-50 text-green-800' : 'border-red-400 bg-red-50 text-red-700' : 'border-mist focus:border-sage'
+                }`} />
+            </div>
+            {revealed && (
+              <div className={`p-4 rounded-lg mb-4 ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+                <div className="flex items-center gap-2 mb-1">
+                  {isCorrect ? <CheckCircle className="w-5 h-5 text-green-600" /> : <XCircle className="w-5 h-5 text-red-500" />}
+                  <span className="font-semibold">{isCorrect ? 'Correct!' : `Correct answer: ${current?.answer} ${current?.unit || ''}`}</span>
+                </div>
+                <p className="text-sm text-earth/80">{current?.explanation}</p>
+              </div>
+            )}
+            {!revealed ? (
+              <button onClick={check} disabled={!input} className="w-full bg-sage text-white font-medium py-3 rounded-lg hover:bg-forest transition-colors disabled:opacity-50">Check Answer</button>
+            ) : (
+              <button onClick={next} className="w-full bg-gold text-forest font-medium py-3 rounded-lg hover:bg-gold/80 transition-colors">
+                {idx < questions.length - 1 ? 'Next Problem →' : 'See Results'}
               </button>
-            ))}
+            )}
           </div>
         ) : (
           <div className="p-8 text-center">
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h3 className="text-forest font-bold text-xl mb-2">All pairs found!</h3>
-            <p className="text-earth mb-6">{moves} moves | Time: {format(seconds)}</p>
+            <div className="w-24 h-24 rounded-full border-4 border-gold flex items-center justify-center mx-auto mb-4">
+              <span className="font-display text-2xl font-bold text-forest">{score}/{questions.length}</span>
+            </div>
+            <p className="text-earth mb-6">Time: {format(seconds)}</p>
             <div className="flex gap-3 justify-center">
-              <button onClick={onClose} className="bg-sage text-white px-6 py-2.5 rounded-lg hover:bg-forest transition-colors">Close</button>
+              <button onClick={() => { setIdx(0); setInput(''); setRevealed(false); setScore(0); setDone(false); }}
+                className="bg-sage text-white px-6 py-2.5 rounded-lg hover:bg-forest transition-colors">Restart</button>
+              <button onClick={onClose} className="border border-earth/30 text-earth px-6 py-2.5 rounded-lg">Close</button>
             </div>
           </div>
         )}
