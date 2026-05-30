@@ -6,14 +6,24 @@ import { X, Clock } from 'lucide-react';
 
 interface QuizModalProps {
   categoryId: string;
+  difficulty?: 'easy' | 'medium' | 'hard' | 'difficult' | 'expert';
   onClose: () => void;
 }
 
-export function QuizModal({ categoryId, onClose }: QuizModalProps) {
+export function QuizModal({ categoryId, difficulty, onClose }: QuizModalProps) {
   const { language, t } = useLanguage();
   const { saveQuizResult } = useProgress();
-  const category = quizCategories.find((c) => c.id === categoryId);
-  const questions = category?.questions || [];
+
+  // Collect ALL questions from ALL categories, filtered by difficulty
+  const allQuestions: QuizQuestion[] = quizCategories
+    .flatMap((c) => c.questions)
+    .filter((q) => !difficulty || q.difficulty === difficulty);
+
+  // Shuffle so it's not always the same order
+  const shuffled = useRef<QuizQuestion[]>(
+    [...allQuestions].sort(() => Math.random() - 0.5)
+  );
+  const questions = shuffled.current;
 
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -24,7 +34,6 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Timer
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setTimeElapsed((prev) => prev + 1);
@@ -43,7 +52,6 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
       setAnswers((prev) => ({ ...prev, [currentIdx]: optionIdx }));
       setRevealed(true);
 
-      // Auto advance after delay
       setTimeout(() => {
         if (currentIdx < questions.length - 1) {
           setCurrentIdx((prev) => prev + 1);
@@ -77,10 +85,10 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
   const percentage = questions.length > 0 ? (score / questions.length) * 100 : 0;
 
   const getPerformanceMessage = () => {
-    if (percentage >= 90) return t('quiz.excellent');
-    if (percentage >= 70) return t('quiz.great');
-    if (percentage >= 50) return t('quiz.good');
-    return t('quiz.keepPracticing');
+    if (percentage >= 90) return language === 'tl' ? 'Napakahusay!' : 'Excellent!';
+    if (percentage >= 70) return language === 'tl' ? 'Magaling!' : 'Great job!';
+    if (percentage >= 50) return language === 'tl' ? 'Magpatuloy!' : 'Keep it up!';
+    return language === 'tl' ? 'Mag-aral pa!' : 'Keep practicing!';
   };
 
   const formatTime = (seconds: number) => {
@@ -90,6 +98,7 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
   };
 
   const restartQuiz = () => {
+    shuffled.current = [...allQuestions].sort(() => Math.random() - 0.5);
     setCurrentIdx(0);
     setSelectedAnswer(null);
     setAnswers({});
@@ -101,7 +110,26 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
     }, 1000);
   };
 
+  if (questions.length === 0) {
+    return (
+      <div className="fixed inset-0 z-50 bg-forest/95 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-lg w-full max-w-sm p-8 text-center">
+          <p className="text-forest font-semibold text-lg mb-4">
+            No questions available for this difficulty level yet.
+          </p>
+          <button onClick={onClose} className="bg-sage text-white px-6 py-2.5 rounded-lg">
+            Go Back
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (!currentQuestion && !showResult) return null;
+
+  const difficultyLabel = difficulty
+    ? difficulty.charAt(0).toUpperCase() + difficulty.slice(1)
+    : 'All';
 
   return (
     <div className="fixed inset-0 z-50 bg-forest/95 flex items-center justify-center p-4">
@@ -109,8 +137,10 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-mist">
           <div className="flex items-center gap-3">
-            {/* Progress bar */}
-            <div className="w-32 h-2 bg-mist rounded-full overflow-hidden">
+            <span className="text-xs font-semibold px-2 py-1 rounded-full bg-sage/20 text-sage">
+              {difficultyLabel}
+            </span>
+            <div className="w-24 h-2 bg-mist rounded-full overflow-hidden">
               <div
                 className="h-full bg-gold rounded-full transition-all duration-300"
                 style={{
@@ -132,7 +162,6 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
             <button
               onClick={onClose}
               className="text-earth/60 hover:text-forest transition-colors"
-              aria-label={t('common.close')}
             >
               <X className="w-5 h-5" />
             </button>
@@ -141,26 +170,24 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
 
         {!showResult ? (
           <div className="px-6 py-6">
-            {/* Question */}
             <h3 className="text-forest font-semibold text-lg mb-6 leading-relaxed">
               {language === 'tl' ? currentQuestion?.questionTl : currentQuestion?.question}
             </h3>
 
-            {/* Options */}
             <div className="space-y-3">
               {(language === 'tl' ? currentQuestion?.optionsTl : currentQuestion?.options)?.map(
                 (option, idx) => {
-                  let optionClass = 'bg-mist text-forest hover:bg-leaf/30';
+                  let cls = 'bg-mist text-forest hover:bg-leaf/30 border-transparent';
                   if (revealed) {
                     if (idx === currentQuestion?.correctAnswer) {
-                      optionClass = 'correct';
+                      cls = 'bg-green-100 border-2 border-green-500 text-green-800';
                     } else if (idx === selectedAnswer) {
-                      optionClass = 'incorrect';
+                      cls = 'bg-red-100 border-2 border-red-400 text-red-700';
                     } else {
-                      optionClass = 'bg-mist/50 text-earth/50';
+                      cls = 'bg-mist/50 text-earth/50 border-transparent';
                     }
                   } else if (idx === selectedAnswer) {
-                    optionClass = 'selected';
+                    cls = 'bg-gold/30 border-2 border-gold text-forest';
                   }
 
                   return (
@@ -168,7 +195,7 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
                       key={idx}
                       onClick={() => handleSelect(idx)}
                       disabled={revealed}
-                      className={`w-full text-left px-5 py-4 rounded-lg quiz-option disabled ${optionClass} text-sm sm:text-base`}
+                      className={`w-full text-left px-5 py-4 rounded-lg transition-all border-2 text-sm sm:text-base ${cls}`}
                     >
                       <span className="font-semibold mr-2">
                         {String.fromCharCode(65 + idx)}.
@@ -180,11 +207,12 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
               )}
             </div>
 
-            {/* Explanation */}
             {revealed && (
               <div className="mt-4 p-4 bg-mist rounded-lg">
                 <p className="text-forest text-sm">
-                  <span className="font-semibold">{language === 'tl' ? 'Paliwanag:' : 'Explanation:'}</span>{' '}
+                  <span className="font-semibold">
+                    {language === 'tl' ? 'Paliwanag: ' : 'Explanation: '}
+                  </span>
                   {language === 'tl'
                     ? currentQuestion?.explanationTl
                     : currentQuestion?.explanation}
@@ -193,17 +221,15 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
             )}
           </div>
         ) : (
-          /* Results Screen */
           <div className="px-6 py-8 text-center">
-            {/* Score Circle */}
             <div className="w-28 h-28 rounded-full border-4 border-gold flex items-center justify-center mx-auto mb-4">
               <span className="font-display text-3xl font-bold text-forest">
                 {score}/{questions.length}
               </span>
             </div>
-            <p className="text-sage text-sm mb-2">{t('quiz.correct')}</p>
+            <p className="text-sage text-sm mb-2">Correct answers</p>
             <p className="text-earth text-base mb-4">
-              {t('quiz.timeTaken')}: {formatTime(timeElapsed)}
+              Time: {formatTime(timeElapsed)}
             </p>
             <p className="text-forest text-lg font-medium mb-6">{getPerformanceMessage()}</p>
 
@@ -212,13 +238,13 @@ export function QuizModal({ categoryId, onClose }: QuizModalProps) {
                 onClick={restartQuiz}
                 className="bg-sage text-white font-medium px-6 py-2.5 rounded-lg hover:bg-forest transition-colors"
               >
-                {t('quiz.tryAgain')}
+                Try Again
               </button>
               <button
                 onClick={onClose}
                 className="border border-earth/30 text-earth font-medium px-6 py-2.5 rounded-lg hover:bg-earth/5 transition-colors"
               >
-                {t('quiz.backToQuizzes')}
+                Back to Quizzes
               </button>
             </div>
           </div>
