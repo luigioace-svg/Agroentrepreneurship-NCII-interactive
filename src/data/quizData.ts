@@ -687,7 +687,7 @@ export const quizCategories: QuizCategory[] = [
         difficulty: 'easy'
       }
     ]
-  }
+  },
   {
     id: 'crop',
     icon: 'Leaf',
