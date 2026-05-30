@@ -8,7 +8,7 @@ import { enumerationData } from '@/data/enumerationData';
 import { computationData } from '@/data/computationData';
 import { memoryData } from '@/data/memoryData';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { X, Clock, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
+import { X, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 // ─────────────────────────────────────────────
 // TYPES
@@ -36,7 +36,7 @@ function useTimer() {
 // MULTIPLE CHOICE MODAL (existing, kept intact)
 // ─────────────────────────────────────────────
 function QuizModal({ categoryId, onClose }: { categoryId: string; onClose: () => void }) {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const { saveQuizResult } = useProgress();
   const category = quizCategories.find(c => c.id === categoryId);
   const questions = category?.questions || [];
