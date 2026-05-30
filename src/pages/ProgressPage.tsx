@@ -99,8 +99,8 @@ export function ProgressPage() {
                 </div>
                 <span className="text-earth text-sm">Study Time</span>
               </div>
-              <p className="font-sans text-3xl font-bold text-forest"
-                {stats.studyHours}h {String(stats.studyMinutes).padStart(2, '0')}m
+              <p className="font-sans text-3xl font-bold text-forest">
+                {stats.studyHours}h {stats.studyMinutes}m
               </p>
             </div>
           </div>
