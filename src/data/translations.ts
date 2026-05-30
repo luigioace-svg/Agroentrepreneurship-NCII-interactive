@@ -191,8 +191,8 @@ export const translations: Record<string, { en: string; tl: string }> = {
     tl: 'Binuo ni Luige I. Acebuche — itinayo nang may puso para sa mga estudyante ng TESDA, mga dedikadong instructor, at kinabukasan ng agrikultura sa Pilipinas.'
   },
   'footer.copyright': {
-    en: '2025 AgroEntrepreneurship NC II Study Platform',
-    tl: '2025 AgroEntrepreneurship NC II Study Platform'
+    en: '2026 AgroEntrepreneurship NC II Study Platform',
+    tl: '2026 AgroEntrepreneurship NC II Study Platform'
   },
 
   // Quiz Interface
