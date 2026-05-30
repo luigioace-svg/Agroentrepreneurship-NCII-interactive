@@ -35,7 +35,7 @@ function useTimer() {
 // ─────────────────────────────────────────────
 // MULTIPLE CHOICE MODAL (existing, kept intact)
 // ─────────────────────────────────────────────
-function QuizModal({ categoryId, difficulty, onClose }: { categoryId: string; onClose: () => void }) {
+function QuizModal({ categoryId: string; difficulty?: Difficulty; onClose: () => void }
   const { language } = useLanguage();
   const { saveQuizResult } = useProgress();
   const category = quizCategories.find(c => c.id === categoryId);
