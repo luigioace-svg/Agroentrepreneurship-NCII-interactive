@@ -11,7 +11,7 @@ interface QuizModalProps {
 }
 
 export function QuizModal({ categoryId, difficulty, onClose }: QuizModalProps) {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const { saveQuizResult } = useProgress();
 
   // Collect ALL questions from ALL categories, filtered by difficulty
