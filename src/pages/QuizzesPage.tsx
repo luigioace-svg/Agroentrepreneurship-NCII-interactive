@@ -8,7 +8,7 @@ import { enumerationData } from '@/data/enumerationData';
 import { computationData } from '@/data/computationData';
 import { memoryData } from '@/data/memoryData';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
-import { X, Clock, RotateCcw, CheckCircle, XCircle } from 'lucide-react';
+import { X, Clock, CheckCircle, XCircle } from 'lucide-react';
 
 // ─────────────────────────────────────────────
 // TYPES
