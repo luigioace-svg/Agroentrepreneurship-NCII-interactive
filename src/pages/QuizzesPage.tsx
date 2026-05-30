@@ -618,7 +618,8 @@ export function QuizzesPage() {
   const handleDifficultySelect = (difficulty: Difficulty) => {
     if (!pendingGame) return;
     if (pendingGame === 'quiz') {
-      setActiveGame({ type: 'quiz', difficulty, categoryId: quizCategories[0]?.id });
+      const quizDifficulty = (difficulty === 'difficult' || difficulty === 'expert') ? 'hard' : difficulty;
+setActiveGame({ type: 'quiz', difficulty: quizDifficulty as Difficulty, categoryId: quizCategories[0]?.id });
     } else {
       setActiveGame({ type: pendingGame, difficulty });
     }
