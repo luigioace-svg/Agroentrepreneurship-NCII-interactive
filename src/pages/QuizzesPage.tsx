@@ -474,42 +474,86 @@ function ComputationGame({ difficulty, onClose }: { difficulty: Difficulty; onCl
 
 // ─────────────────────────────────────────────
 // MEMORY CARD GAME
+// Replace the duplicate ComputationGame block (the one under the
+// "// MEMORY CARD GAME" comment) in QuizzesPage.tsx with this component.
 // ─────────────────────────────────────────────
-  function ComputationGame({ difficulty, onClose }: { difficulty: Difficulty; onClose: () => void }) {
-  const questions = computationData.filter(c => c.difficulty === difficulty);
-  const [idx, setIdx] = useState(0);
-  const [input, setInput] = useState();
-  const [revealed, setRevealed] = useState(false);
-  const [score, setScore] = useState(0);
+
+function MemoryGame({ difficulty, onClose }: { difficulty: Difficulty; onClose: () => void }) {
+  const pairs = memoryData.filter(m => m.difficulty === difficulty).slice(0, 8);
+
+  // Build a flat list of cards: each pair produces a TERM card and a DEF card
+  type MemoryCard = { id: string; pairId: number; label: string; type: 'term' | 'def' };
+  const [cards] = useState<MemoryCard[]>(() => {
+    const deck: MemoryCard[] = [];
+    pairs.forEach((p, i) => {
+      deck.push({ id: `t${i}`, pairId: i, label: p.term, type: 'term' });
+      deck.push({ id: `d${i}`, pairId: i, label: p.definition, type: 'def' });
+    });
+    // Fisher-Yates shuffle
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+    return deck;
+  });
+
+  const [flipped, setFlipped] = useState<string[]>([]);   // up to 2 card ids
+  const [matched, setMatched] = useState<string[]>([]);   // all matched card ids
+  const [locked, setLocked] = useState(false);
+  const [moves, setMoves] = useState(0);
   const [done, setDone] = useState(false);
   const { seconds, start, stop, format } = useTimer();
-  
   useEffect(() => { start(); }, []);
-  
-  const current = questions[idx];
-  
-  const check = () => {
-    setRevealed(true);
-    const userVal = parseFloat(input.replace(/,/g, ''));
-    if (Math.abs(userVal - current.answer) < 0.01) setScore(s => s + 1);
+
+  const handleFlip = (card: MemoryCard) => {
+    if (locked) return;
+    if (flipped.includes(card.id)) return;
+    if (matched.includes(card.id)) return;
+    if (flipped.length === 2) return;
+
+    const newFlipped = [...flipped, card.id];
+    setFlipped(newFlipped);
+
+    if (newFlipped.length === 2) {
+      setMoves(m => m + 1);
+      const [a, b] = newFlipped.map(id => cards.find(c => c.id === id)!);
+      if (a.pairId === b.pairId && a.type !== b.type) {
+        // Match!
+        const newMatched = [...matched, a.id, b.id];
+        setMatched(newMatched);
+        setFlipped([]);
+        if (newMatched.length === cards.length) { setDone(true); stop(); }
+      } else {
+        // No match — flip back after delay
+        setLocked(true);
+        setTimeout(() => { setFlipped([]); setLocked(false); }, 900);
+      }
+    }
   };
-  
-  const next = () => {
-    setRevealed(false);
-    setInput('');
-    if (idx < questions.length - 1) setIdx(idx + 1);
-    else { setDone(true); stop(); }
+
+  const restart = () => {
+    setFlipped([]);
+    setMatched([]);
+    setLocked(false);
+    setMoves(0);
+    setDone(false);
   };
-  
-  const isCorrect = revealed && Math.abs(parseFloat(input.replace(/,/g, '')) - current?.answer) < 0.01;
-  
-  if (!current) return null;
-  
+
+  const isFlipped = (id: string) => flipped.includes(id) || matched.includes(id);
+  const isMatched = (id: string) => matched.includes(id);
+  const isWrong = (id: string) => flipped.length === 2 && flipped.includes(id) && !matched.includes(id);
+
   return (
     <div className="fixed inset-0 z-50 bg-forest/95 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-mist">
-          <span className="text-sage text-sm">Problem {idx + 1}/{questions.length}</span>
+          <div className="flex items-center gap-4">
+            <span className="text-forest font-semibold text-sm">
+              {matched.length / 2}/{pairs.length} matched
+            </span>
+            <span className="text-earth/60 text-sm">{moves} moves</span>
+          </div>
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1 text-terracotta text-sm font-semibold">
               <Clock className="w-4 h-4" />{format(seconds)}
@@ -517,47 +561,70 @@ function ComputationGame({ difficulty, onClose }: { difficulty: Difficulty; onCl
             <button onClick={onClose}><X className="w-5 h-5 text-earth/60" /></button>
           </div>
         </div>
+
         {!done ? (
-          <div className="p-6">
-            <div className="bg-mist rounded-xl p-5 mb-5">
-              <p className="text-forest font-semibold text-base leading-relaxed">{current?.question}</p>
+          <div className="p-5">
+            <p className="text-earth/60 text-xs text-center mb-4">
+              Flip two cards — match each <span className="font-semibold text-forest">term</span> with its <span className="font-semibold text-forest">definition</span>
+            </p>
+            {/* 4-column grid */}
+            <div className="grid grid-cols-4 gap-2">
+              {cards.map(card => {
+                const revealed = isFlipped(card.id);
+                const matched_ = isMatched(card.id);
+                const wrong = isWrong(card.id);
+
+                return (
+                  <button
+                    key={card.id}
+                    onClick={() => handleFlip(card)}
+                    disabled={revealed || locked}
+                    className={`
+                      relative h-20 rounded-xl text-xs font-medium transition-all duration-200 border-2 p-2 leading-tight
+                      ${!revealed
+                        ? 'bg-forest text-white border-forest hover:bg-sage hover:border-sage cursor-pointer'
+                        : matched_
+                          ? 'bg-green-100 border-green-400 text-green-800 cursor-default'
+                          : wrong
+                            ? 'bg-red-100 border-red-400 text-red-700'
+                            : 'bg-gold/20 border-gold text-forest cursor-default'
+                      }
+                    `}
+                  >
+                    {!revealed ? (
+                      <span className="text-white/60 text-lg">?</span>
+                    ) : (
+                      <span className="line-clamp-3">{card.label}</span>
+                    )}
+                    {revealed && (
+                      <span className={`absolute top-1 right-1.5 text-[9px] font-bold uppercase tracking-wide opacity-50`}>
+                        {card.type === 'term' ? 'T' : 'D'}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
-            {current?.hint && <p className="text-earth/60 text-sm mb-4 italic">Hint: {current.hint}</p>}
-            <div className="mb-5">
-              <label className="block text-forest text-sm font-medium mb-2">Your Answer:</label>
-              <input type="number" value={input} onChange={e => setInput(e.target.value)} disabled={revealed}
-                placeholder="Enter your answer..."
-                className={`w-full border-2 rounded-lg px-4 py-3 text-lg font-semibold outline-none transition-all ${
-                  revealed ? isCorrect ? 'border-green-500 bg-green-50 text-green-800' : 'border-red-400 bg-red-50 text-red-700' : 'border-mist focus:border-sage'
-                }`} />
-            </div>
-            {revealed && (
-              <div className={`p-4 rounded-lg mb-4 ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  {isCorrect ? <CheckCircle className="w-5 h-5 text-green-600" /> : <XCircle className="w-5 h-5 text-red-500" />}
-                  <span className="font-semibold">{isCorrect ? 'Correct!' : `Correct answer: ${current?.answer} ${current?.unit || ''}`}</span>
-                </div>
-                <p className="text-sm text-earth/80">{current?.explanation}</p>
-              </div>
-            )}
-            {!revealed ? (
-              <button onClick={check} disabled={!input} className="w-full bg-sage text-white font-medium py-3 rounded-lg hover:bg-forest transition-colors disabled:opacity-50">Check Answer</button>
-            ) : (
-              <button onClick={next} className="w-full bg-gold text-forest font-medium py-3 rounded-lg hover:bg-gold/80 transition-colors">
-                {idx < questions.length - 1 ? 'Next Problem →' : 'See Results'}
-              </button>
-            )}
           </div>
         ) : (
           <div className="p-8 text-center">
-            <div className="w-24 h-24 rounded-full border-4 border-gold flex items-center justify-center mx-auto mb-4">
-              <span className="font-display text-2xl font-bold text-forest">{score}/{questions.length}</span>
-            </div>
-            <p className="text-earth mb-6">Time: {format(seconds)}</p>
+            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <h3 className="text-forest font-bold text-xl mb-1">All pairs matched!</h3>
+            <p className="text-earth/70 text-sm mb-1">Time: {format(seconds)}</p>
+            <p className="text-earth/70 text-sm mb-6">{moves} moves</p>
             <div className="flex gap-3 justify-center">
-              <button onClick={() => { setIdx(0); setInput(''); setRevealed(false); setScore(0); setDone(false); }}
-                className="bg-sage text-white px-6 py-2.5 rounded-lg hover:bg-forest transition-colors">Restart</button>
-              <button onClick={onClose} className="border border-earth/30 text-earth px-6 py-2.5 rounded-lg">Close</button>
+              <button
+                onClick={restart}
+                className="bg-sage text-white px-6 py-2.5 rounded-lg hover:bg-forest transition-colors"
+              >
+                Play Again
+              </button>
+              <button
+                onClick={onClose}
+                className="border border-earth/30 text-earth px-6 py-2.5 rounded-lg hover:bg-earth/5 transition-colors"
+              >
+                Close
+              </button>
             </div>
           </div>
         )}
@@ -565,7 +632,7 @@ function ComputationGame({ difficulty, onClose }: { difficulty: Difficulty; onCl
     </div>
   );
 }
-
+                                                     
 // ─────────────────────────────────────────────
 // DIFFICULTY SELECTOR
 // ─────────────────────────────────────────────
