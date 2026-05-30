@@ -688,6 +688,7 @@ export const quizCategories: QuizCategory[] = [
       }
     ]
   },
+
   {
     id: 'crop',
     icon: 'Leaf',
