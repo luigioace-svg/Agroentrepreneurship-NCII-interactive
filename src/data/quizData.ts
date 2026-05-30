@@ -688,4 +688,415 @@ export const quizCategories: QuizCategory[] = [
       }
     ]
   }
+  {
+    id: 'crop',
+    icon: 'Leaf',
+    title: 'Crop Production & Soil Management',
+    titleTl: 'Produksyon ng Pananim at Pamamahala ng Lupa',
+    description: 'Soil preparation, seed selection, planting, pest management, and harvesting',
+    descriptionTl: 'Paghahanda ng lupa, pagpili ng binhi, pagtatanim, pamamahala ng peste, at pag-aani',
+    questions: [
+      // ── EASY ──
+      {
+        id: 56,
+        question: 'What is the primary purpose of soil tillage?',
+        questionTl: 'Ano ang pangunahing layunin ng pagsasaka ng lupa?',
+        options: ['To loosen and aerate the soil for planting', 'To compact the soil', 'To remove all nutrients', 'To dry out the field'],
+        optionsTl: ['Upang maluwag at mai-aerate ang lupa para sa pagtatanim', 'Upang i-compact ang lupa', 'Upang alisin ang lahat ng nutrients', 'Upang patuyuin ang bukid'],
+        correctAnswer: 0,
+        explanation: 'Soil tillage loosens and aerates the soil, making it suitable for planting.',
+        explanationTl: 'Ang pagsasaka ng lupa ay nagpapaluwag at nag-a-aerate ng lupa, na ginagawa itong angkop para sa pagtatanim.',
+        difficulty: 'easy'
+      },
+      {
+        id: 57,
+        question: 'Which type of soil is best for most crops?',
+        questionTl: 'Anong uri ng lupa ang pinakamainam para sa karamihan ng pananim?',
+        options: ['Loam soil', 'Pure sand', 'Pure clay', 'Gravel'],
+        optionsTl: ['Loam na lupa', 'Purong buhangin', 'Purong clay', 'Graba'],
+        correctAnswer: 0,
+        explanation: 'Loam soil is best for most crops because it has a balanced mix of sand, silt, and clay.',
+        explanationTl: 'Ang loam na lupa ay pinakamainam para sa karamihan ng pananim dahil mayroon itong balanseng halo ng buhangin, silt, at clay.',
+        difficulty: 'easy'
+      },
+      {
+        id: 58,
+        question: 'What is the purpose of crop rotation?',
+        questionTl: 'Ano ang layunin ng crop rotation?',
+        options: ['To maintain soil health and reduce pests', 'To plant the same crop every year', 'To increase soil erosion', 'To remove water from soil'],
+        optionsTl: ['Upang mapanatili ang kalusugan ng lupa at mabawasan ang mga peste', 'Upang magtanim ng parehong pananim bawat taon', 'Upang dagdagan ang soil erosion', 'Upang alisin ang tubig mula sa lupa'],
+        correctAnswer: 0,
+        explanation: 'Crop rotation maintains soil health, reduces pests and diseases, and improves yield.',
+        explanationTl: 'Ang crop rotation ay nagpapanatili ng kalusugan ng lupa, nagpapababa ng mga peste at sakit, at nagpapabuti ng ani.',
+        difficulty: 'easy'
+      },
+      {
+        id: 59,
+        question: 'What does pH level in soil measure?',
+        questionTl: 'Ano ang sinusukat ng pH level sa lupa?',
+        options: ['Acidity or alkalinity of the soil', 'Amount of water in soil', 'Number of insects in soil', 'Temperature of soil'],
+        optionsTl: ['Acidity o alkalinity ng lupa', 'Dami ng tubig sa lupa', 'Bilang ng mga insekto sa lupa', 'Temperatura ng lupa'],
+        correctAnswer: 0,
+        explanation: 'Soil pH measures the acidity or alkalinity, which affects nutrient availability for plants.',
+        explanationTl: 'Ang soil pH ay sumusukat ng acidity o alkalinity, na nakakaapekto sa availability ng nutrients para sa mga halaman.',
+        difficulty: 'easy'
+      },
+      {
+        id: 60,
+        question: 'What is composting?',
+        questionTl: 'Ano ang composting?',
+        options: ['Breaking down organic matter into fertilizer', 'Burning farm waste', 'Spraying chemicals on soil', 'Removing topsoil'],
+        optionsTl: ['Pagbasag ng organic matter para maging pataba', 'Pagsusunog ng basura sa bukid', 'Pagspray ng kemikal sa lupa', 'Pag-alis ng topsoil'],
+        correctAnswer: 0,
+        explanation: 'Composting is the process of breaking down organic matter into natural fertilizer.',
+        explanationTl: 'Ang composting ay ang proseso ng pagbasag ng organic matter para maging natural na pataba.',
+        difficulty: 'easy'
+      },
+      {
+        id: 61,
+        question: 'What is the correct way to select quality seeds?',
+        questionTl: 'Ano ang tamang paraan sa pagpili ng de-kalidad na binhi?',
+        options: ['Choose seeds that are uniform, clean, and disease-free', 'Pick the cheapest seeds available', 'Use any old seeds from storage', 'Choose seeds by color only'],
+        optionsTl: ['Pumili ng mga binhing pantay, malinis, at walang sakit', 'Pumili ng pinakamura', 'Gumamit ng lumang binhi mula sa imbakan', 'Pumili ng binhi batay sa kulay lamang'],
+        correctAnswer: 0,
+        explanation: 'Quality seeds should be uniform, clean, and free from disease to ensure good germination.',
+        explanationTl: 'Ang de-kalidad na binhi ay dapat pantay, malinis, at walang sakit upang matiyak ang magandang pagsisibol.',
+        difficulty: 'easy'
+      },
+      {
+        id: 62,
+        question: 'What is mulching used for in farming?',
+        questionTl: 'Para saan ginagamit ang mulching sa pagsasaka?',
+        options: ['To retain soil moisture and suppress weeds', 'To increase soil temperature drastically', 'To remove nutrients from soil', 'To compact the soil'],
+        optionsTl: ['Upang mapanatili ang moisture ng lupa at sugpuin ang mga damo', 'Upang dramatikong itaas ang temperatura ng lupa', 'Upang alisin ang nutrients mula sa lupa', 'Upang i-compact ang lupa'],
+        correctAnswer: 0,
+        explanation: 'Mulching retains soil moisture, suppresses weeds, and regulates soil temperature.',
+        explanationTl: 'Ang mulching ay nagpapanatili ng moisture ng lupa, sumisugpo ng mga damo, at nag-a-regulate ng temperatura ng lupa.',
+        difficulty: 'easy'
+      },
+      {
+        id: 63,
+        question: 'What is the most basic pest control method?',
+        questionTl: 'Ano ang pinaka-pangunahing paraan ng pest control?',
+        options: ['Manually removing pests by hand', 'Applying maximum pesticide', 'Burning all crops', 'Flooding the field'],
+        optionsTl: ['Mano-manong pag-alis ng mga peste', 'Pag-apply ng maximum na pestisidyo', 'Pagsusunog ng lahat ng pananim', 'Pagbabaha ng bukid'],
+        correctAnswer: 0,
+        explanation: 'Manual removal is the most basic and eco-friendly pest control method.',
+        explanationTl: 'Ang mano-manong pag-alis ay ang pinaka-pangunahing at eco-friendly na paraan ng pest control.',
+        difficulty: 'easy'
+      },
+      // ── MEDIUM ──
+      {
+        id: 64,
+        question: 'What is Integrated Pest Management (IPM)?',
+        questionTl: 'Ano ang Integrated Pest Management (IPM)?',
+        options: ['Using multiple pest control strategies in combination', 'Using only chemical pesticides', 'Ignoring pests until harvest', 'Flooding fields to kill all pests'],
+        optionsTl: ['Paggamit ng maraming estratehiya ng pest control nang sabay', 'Paggamit lamang ng kemikal na pestisidyo', 'Pagpapabaya sa mga peste hanggang pag-aani', 'Pagbabaha ng mga bukid para patayin ang lahat ng peste'],
+        correctAnswer: 0,
+        explanation: 'IPM uses a combination of biological, cultural, mechanical, and chemical methods to control pests sustainably.',
+        explanationTl: 'Ang IPM ay gumagamit ng kombinasyon ng biological, cultural, mechanical, at chemical na pamamaraan para kontrolin ang mga peste nang sustainable.',
+        difficulty: 'medium'
+      },
+      {
+        id: 65,
+        question: 'What is nitrogen fixation important for in agriculture?',
+        questionTl: 'Bakit mahalaga ang nitrogen fixation sa agrikultura?',
+        options: ['It converts atmospheric nitrogen into a form plants can use', 'It removes nitrogen from soil', 'It kills harmful bacteria', 'It dries the soil faster'],
+        optionsTl: ['Ini-convert nito ang atmospheric nitrogen sa anyong magagamit ng halaman', 'Inaalis nito ang nitrogen mula sa lupa', 'Pinapatay nito ang mga nakakapinsalang bacteria', 'Nagpapatuyo nito ng lupa nang mas mabilis'],
+        correctAnswer: 0,
+        explanation: 'Nitrogen fixation converts atmospheric nitrogen into ammonia or nitrates that plants can absorb for growth.',
+        explanationTl: 'Ang nitrogen fixation ay nag-co-convert ng atmospheric nitrogen sa ammonia o nitrates na maaaring masipsip ng mga halaman para sa paglaki.',
+        difficulty: 'medium'
+      },
+      {
+        id: 66,
+        question: 'What is the purpose of irrigation in farming?',
+        questionTl: 'Ano ang layunin ng irrigation sa pagsasaka?',
+        options: ['To supply water to crops artificially', 'To drain excess water', 'To remove soil nutrients', 'To compact the soil'],
+        optionsTl: ['Upang mag-supply ng tubig sa mga pananim nang artipisyal', 'Upang i-drain ang labis na tubig', 'Upang alisin ang nutrients ng lupa', 'Upang i-compact ang lupa'],
+        correctAnswer: 0,
+        explanation: 'Irrigation artificially supplies water to crops when natural rainfall is insufficient.',
+        explanationTl: 'Ang irrigation ay artipisyal na nagbibigay ng tubig sa mga pananim kung ang natural na ulan ay hindi sapat.',
+        difficulty: 'medium'
+      },
+      {
+        id: 67,
+        question: 'What does post-harvest handling primarily aim to do?',
+        questionTl: 'Ano ang pangunahing layunin ng post-harvest handling?',
+        options: ['Reduce losses and maintain product quality', 'Increase crop weight', 'Speed up decomposition', 'Remove all packaging'],
+        optionsTl: ['Bawasan ang mga pagkalugi at panatilihin ang kalidad ng produkto', 'Dagdagan ang timbang ng pananim', 'Pabilisin ang decomposition', 'Alisin ang lahat ng packaging'],
+        correctAnswer: 0,
+        explanation: 'Post-harvest handling aims to reduce losses and maintain the quality of agricultural products.',
+        explanationTl: 'Ang post-harvest handling ay naglalayong bawasan ang mga pagkalugi at panatilihin ang kalidad ng mga produktong agrikultural.',
+        difficulty: 'medium'
+      },
+      {
+        id: 68,
+        question: 'What is the difference between organic and inorganic fertilizer?',
+        questionTl: 'Ano ang pagkakaiba ng organic at inorganic na pataba?',
+        options: ['Organic comes from natural sources; inorganic is synthetically made', 'Organic is always more expensive', 'Inorganic is always better', 'They are the same thing'],
+        optionsTl: ['Ang organic ay mula sa natural na pinagkukunan; ang inorganic ay synthetically na gawa', 'Ang organic ay palaging mas mahal', 'Ang inorganic ay palaging mas mahusay', 'Magkapareho sila'],
+        correctAnswer: 0,
+        explanation: 'Organic fertilizers come from natural sources like compost and manure; inorganic fertilizers are synthetically produced.',
+        explanationTl: 'Ang organic na pataba ay nagmumula sa natural na pinagkukunan tulad ng compost at dumi ng hayop; ang inorganic ay synthetically na ginawa.',
+        difficulty: 'medium'
+      },
+      {
+        id: 69,
+        question: 'What is soil erosion and how can it be prevented?',
+        questionTl: 'Ano ang soil erosion at paano ito maiwasan?',
+        options: ['Loss of topsoil due to wind/water; prevented by contour farming and cover crops', 'Gain of topsoil; prevented by flooding', 'Loss of water; prevented by removing plants', 'Increase in soil nutrients; no prevention needed'],
+        optionsTl: ['Pagkawala ng topsoil dahil sa hangin/tubig; naiwasan sa pamamagitan ng contour farming at cover crops', 'Pagdami ng topsoil; naiwasan sa pamamagitan ng pagbabaha', 'Pagkawala ng tubig; naiwasan sa pamamagitan ng pag-alis ng mga halaman', 'Pagtaas ng nutrients ng lupa; walang kailangang pag-iwas'],
+        correctAnswer: 0,
+        explanation: 'Soil erosion is the loss of topsoil due to wind or water. It can be prevented through contour farming, cover crops, and terracing.',
+        explanationTl: 'Ang soil erosion ay ang pagkawala ng topsoil dahil sa hangin o tubig. Maaari itong maiwasan sa pamamagitan ng contour farming, cover crops, at terracing.',
+        difficulty: 'medium'
+      },
+      // ── HARD ──
+      {
+        id: 70,
+        question: 'What is the concept of Sustainable Agriculture?',
+        questionTl: 'Ano ang konsepto ng Sustainable Agriculture?',
+        options: ['Farming that meets current needs without compromising future generations', 'Using maximum chemicals for highest yield', 'Farming only for profit regardless of environment', 'Cutting all trees to expand farmland'],
+        optionsTl: ['Pagsasaka na nakakatugon sa kasalukuyang pangangailangan nang hindi nakokompromiso ang hinaharap na henerasyon', 'Paggamit ng maximum na kemikal para sa pinakamataas na ani', 'Pagsasaka para sa tubo lamang anuman ang epekto sa kalikasan', 'Pagputol ng lahat ng puno para palawakin ang bukid'],
+        correctAnswer: 0,
+        explanation: 'Sustainable agriculture meets current food needs while preserving resources for future generations.',
+        explanationTl: 'Ang sustainable agriculture ay nakakatugon sa kasalukuyang pangangailangan sa pagkain habang pinopreserba ang mga resources para sa hinaharap na henerasyon.',
+        difficulty: 'hard'
+      },
+      {
+        id: 71,
+        question: 'What is vermicomposting?',
+        questionTl: 'Ano ang vermicomposting?',
+        options: ['Using earthworms to decompose organic waste into rich fertilizer', 'A type of chemical fertilizer', 'A method of flood irrigation', 'A pest control technique'],
+        optionsTl: ['Paggamit ng mga earthworm para i-decompose ang organic waste para maging mayamang pataba', 'Uri ng kemikal na pataba', 'Paraan ng flood irrigation', 'Teknik ng pest control'],
+        correctAnswer: 0,
+        explanation: 'Vermicomposting uses earthworms to break down organic waste into nutrient-rich fertilizer called vermicast.',
+        explanationTl: 'Ang vermicomposting ay gumagamit ng mga earthworm para sirain ang organic waste para maging nutrient-rich na pataba na tinatawag na vermicast.',
+        difficulty: 'hard'
+      },
+      {
+        id: 72,
+        question: 'What does Good Agricultural Practices (GAP) ensure?',
+        questionTl: 'Ano ang tinitiyak ng Good Agricultural Practices (GAP)?',
+        options: ['Safe, sustainable, and quality food production', 'Maximum chemical use', 'Fastest harvesting possible', 'Least labor use'],
+        optionsTl: ['Ligtas, sustainable, at de-kalidad na produksyon ng pagkain', 'Maximum na paggamit ng kemikal', 'Pinakamabilis na pag-aani', 'Pinakakaunting paggamit ng lakas-paggawa'],
+        correctAnswer: 0,
+        explanation: 'GAP ensures that agricultural products are produced safely, sustainably, and with consistent quality.',
+        explanationTl: 'Ang GAP ay tinitiyak na ang mga produktong agrikultural ay ginagawa nang ligtas, sustainable, at may consistent na kalidad.',
+        difficulty: 'hard'
+      },
+      {
+        id: 73,
+        question: 'What is the role of mycorrhizal fungi in plant growth?',
+        questionTl: 'Ano ang papel ng mycorrhizal fungi sa paglaki ng halaman?',
+        options: ['They help plants absorb water and nutrients more efficiently', 'They cause plant diseases', 'They kill beneficial insects', 'They increase soil acidity drastically'],
+        optionsTl: ['Tinutulungan nila ang mga halaman na mas mahusay na masipsip ang tubig at nutrients', 'Nagdudulot sila ng sakit sa halaman', 'Pinapatay nila ang mga kapaki-pakinabang na insekto', 'Dramatikong pinapataas nila ang acidity ng lupa'],
+        correctAnswer: 0,
+        explanation: 'Mycorrhizal fungi form symbiotic relationships with plant roots, helping them absorb water and nutrients more efficiently.',
+        explanationTl: 'Ang mycorrhizal fungi ay bumubuo ng symbiotic na relasyon sa mga ugat ng halaman, na tumutulong sa kanila na mas mahusay na masipsip ang tubig at nutrients.',
+        difficulty: 'hard'
+      },
+      {
+        id: 74,
+        question: 'What is the purpose of a crop calendar in farm management?',
+        questionTl: 'Ano ang layunin ng crop calendar sa pamamahala ng bukid?',
+        options: ['To plan planting and harvesting schedules based on seasons', 'To track employee birthdays', 'To record daily weather only', 'To calculate loan payments'],
+        optionsTl: ['Upang magplano ng mga iskedyul ng pagtatanim at pag-aani batay sa mga panahon', 'Upang subaybayan ang mga kaarawan ng empleyado', 'Upang i-record lamang ang pang-araw-araw na panahon', 'Upang kalkulahin ang mga bayad sa utang'],
+        correctAnswer: 0,
+        explanation: 'A crop calendar helps farmers plan planting, maintenance, and harvesting activities according to seasonal conditions.',
+        explanationTl: 'Ang crop calendar ay tumutulong sa mga magsasaka na magplano ng mga aktibidad sa pagtatanim, pagpapanatili, at pag-aani ayon sa mga kondisyon ng panahon.',
+        difficulty: 'hard'
+      },
+      {
+        id: 75,
+        question: 'What is biological pest control?',
+        questionTl: 'Ano ang biological pest control?',
+        options: ['Using natural predators or organisms to control pest populations', 'Spraying maximum chemicals', 'Burning infested crops', 'Using plastic covers on all plants'],
+        optionsTl: ['Paggamit ng natural na predators o organisms para kontrolin ang populasyon ng peste', 'Pag-spray ng maximum na kemikal', 'Pagsusunog ng mga naimpektahang pananim', 'Paggamit ng plastic na takip sa lahat ng halaman'],
+        correctAnswer: 0,
+        explanation: 'Biological pest control uses natural enemies like predatory insects, parasites, or pathogens to manage pest populations.',
+        explanationTl: 'Ang biological pest control ay gumagamit ng natural na kaaway tulad ng predatory insects, parasites, o pathogens para pamahalaan ang populasyon ng peste.',
+        difficulty: 'hard'
+      }
+    ]
+  },
+  {
+    id: 'business',
+    icon: 'Briefcase',
+    title: 'Business Planning & Operations',
+    titleTl: 'Pagpaplano at Operasyon ng Negosyo',
+    description: 'Business plan preparation, costing, pricing, and farm enterprise management',
+    descriptionTl: 'Paghahanda ng business plan, costings, pricing, at pamamahala ng farm enterprise',
+    questions: [
+      // ── EASY ──
+      {
+        id: 76,
+        question: 'What is a business plan?',
+        questionTl: 'Ano ang business plan?',
+        options: ['A written document describing goals and strategies of a business', 'A list of farm tools', 'A record of daily expenses only', 'A government form'],
+        optionsTl: ['Isang nakasulat na dokumento na naglalarawan ng mga layunin at estratehiya ng negosyo', 'Isang listahan ng mga kasangkapan sa bukid', 'Isang talaan ng pang-araw-araw na gastos lamang', 'Isang form ng gobyerno'],
+        correctAnswer: 0,
+        explanation: 'A business plan is a written document describing a business\'s goals, strategies, and financial projections.',
+        explanationTl: 'Ang business plan ay isang nakasulat na dokumento na naglalarawan ng mga layunin, estratehiya, at proyeksyon ng pananalapi ng negosyo.',
+        difficulty: 'easy'
+      },
+      {
+        id: 77,
+        question: 'What is a direct cost in farm production?',
+        questionTl: 'Ano ang direct cost sa produksyon sa bukid?',
+        options: ['Cost directly tied to producing a product like seeds and labor', 'Cost of advertising only', 'Cost of farm rent', 'Cost of depreciation'],
+        optionsTl: ['Gastos na direktang nauugnay sa paglikha ng produkto tulad ng binhi at lakas-paggawa', 'Gastos sa advertising lamang', 'Gastos sa upa ng bukid', 'Gastos sa depreciation'],
+        correctAnswer: 0,
+        explanation: 'Direct costs are those directly tied to production, such as seeds, fertilizer, and labor.',
+        explanationTl: 'Ang direct costs ay ang mga gastos na direktang nauugnay sa produksyon, tulad ng binhi, pataba, at lakas-paggawa.',
+        difficulty: 'easy'
+      },
+      {
+        id: 78,
+        question: 'What is an indirect cost?',
+        questionTl: 'Ano ang indirect cost?',
+        options: ['Cost not directly tied to production like rent and depreciation', 'Cost of seeds', 'Cost of fertilizer', 'Cost of labor'],
+        optionsTl: ['Gastos na hindi direktang nauugnay sa produksyon tulad ng upa at depreciation', 'Gastos ng binhi', 'Gastos ng pataba', 'Gastos ng lakas-paggawa'],
+        correctAnswer: 0,
+        explanation: 'Indirect costs are not directly tied to production and include rent, utilities, and depreciation.',
+        explanationTl: 'Ang indirect costs ay hindi direktang nauugnay sa produksyon at kinabibilangan ng upa, utilities, at depreciation.',
+        difficulty: 'easy'
+      },
+      {
+        id: 79,
+        question: 'What does gross profit mean?',
+        questionTl: 'Ano ang ibig sabihin ng gross profit?',
+        options: ['Total revenue minus cost of goods sold', 'Total revenue minus all expenses', 'Total sales only', 'Total expenses only'],
+        optionsTl: ['Kabuuang kita na bawas ang halaga ng mga naibentang produkto', 'Kabuuang kita na bawas ang lahat ng gastos', 'Kabuuang benta lamang', 'Kabuuang gastos lamang'],
+        correctAnswer: 0,
+        explanation: 'Gross profit is total revenue minus the cost of goods sold (direct production costs).',
+        explanationTl: 'Ang gross profit ay ang kabuuang kita na bawas ang halaga ng mga naibentang produkto (direct na gastos sa produksyon).',
+        difficulty: 'easy'
+      },
+      {
+        id: 80,
+        question: 'What is the formula for Net Income?',
+        questionTl: 'Ano ang formula ng Net Income?',
+        options: ['Gross Income minus Total Costs', 'Revenue plus Expenses', 'Sales minus Labor only', 'Revenue divided by Units'],
+        optionsTl: ['Gross Income na bawas ang Kabuuang Gastos', 'Revenue kasama ang Expenses', 'Benta na bawas ang Lakas-paggawa lamang', 'Revenue na hinati sa Mga Yunit'],
+        correctAnswer: 0,
+        explanation: 'Net Income = Gross Income − Total Costs (all fixed and variable costs).',
+        explanationTl: 'Net Income = Gross Income − Kabuuang Gastos (lahat ng fixed at variable na gastos).',
+        difficulty: 'easy'
+      },
+      // ── MEDIUM ──
+      {
+        id: 81,
+        question: 'What is break-even analysis used for?',
+        questionTl: 'Para saan ginagamit ang break-even analysis?',
+        options: ['To find the point where total revenue equals total costs', 'To calculate total profits only', 'To determine tax obligations', 'To measure employee performance'],
+        optionsTl: ['Upang mahanap ang punto kung saan ang kabuuang kita ay katumbas ng kabuuang gastos', 'Upang kalkulahin ang kabuuang kita lamang', 'Upang matukoy ang mga obligasyon sa buwis', 'Upang sukatin ang pagganap ng empleyado'],
+        correctAnswer: 0,
+        explanation: 'Break-even analysis identifies the point where total revenue equals total costs — no profit or loss.',
+        explanationTl: 'Ang break-even analysis ay nagtatukoy ng punto kung saan ang kabuuang kita ay katumbas ng kabuuang gastos — walang tubo o pagkalugi.',
+        difficulty: 'medium'
+      },
+      {
+        id: 82,
+        question: 'What is a cash flow statement?',
+        questionTl: 'Ano ang cash flow statement?',
+        options: ['A record of cash coming in and going out of a business', 'A list of farm assets', 'A government tax document', 'A marketing plan'],
+        optionsTl: ['Isang talaan ng cash na pumapasok at lumalabas sa negosyo', 'Isang listahan ng mga asset ng bukid', 'Isang dokumento ng buwis ng gobyerno', 'Isang marketing plan'],
+        correctAnswer: 0,
+        explanation: 'A cash flow statement records all cash inflows and outflows in a business over a period.',
+        explanationTl: 'Ang cash flow statement ay nagtatala ng lahat ng cash inflows at outflows sa isang negosyo sa isang panahon.',
+        difficulty: 'medium'
+      },
+      {
+        id: 83,
+        question: 'What is depreciation in farm accounting?',
+        questionTl: 'Ano ang depreciation sa accounting ng bukid?',
+        options: ['Decrease in value of assets over time', 'Increase in crop yield', 'Rise in land value', 'Growth in revenue'],
+        optionsTl: ['Pagbaba ng halaga ng mga asset sa paglipas ng panahon', 'Pagtaas ng ani', 'Pagtaas ng halaga ng lupa', 'Paglago ng kita'],
+        correctAnswer: 0,
+        explanation: 'Depreciation is the decrease in value of farm assets like equipment and machinery over time.',
+        explanationTl: 'Ang depreciation ay ang pagbaba ng halaga ng mga asset ng bukid tulad ng kagamitan at makinarya sa paglipas ng panahon.',
+        difficulty: 'medium'
+      },
+      {
+        id: 84,
+        question: 'What is the difference between fixed and variable costs?',
+        questionTl: 'Ano ang pagkakaiba ng fixed at variable costs?',
+        options: ['Fixed costs stay constant; variable costs change with production level', 'Fixed costs always increase; variable costs decrease', 'They are the same thing', 'Variable costs are always lower'],
+        optionsTl: ['Ang fixed costs ay nananatiling pare-pareho; ang variable costs ay nagbabago sa antas ng produksyon', 'Ang fixed costs ay palaging tumataas; ang variable costs ay bumababa', 'Magkapareho sila', 'Ang variable costs ay palaging mas mababa'],
+        correctAnswer: 0,
+        explanation: 'Fixed costs (like rent) remain constant regardless of output; variable costs (like seeds) change with production level.',
+        explanationTl: 'Ang fixed costs (tulad ng upa) ay nananatiling pare-pareho anuman ang output; ang variable costs (tulad ng binhi) ay nagbabago sa antas ng produksyon.',
+        difficulty: 'medium'
+      },
+      {
+        id: 85,
+        question: 'What is profit margin?',
+        questionTl: 'Ano ang profit margin?',
+        options: ['Net profit divided by total revenue, expressed as a percentage', 'Total sales minus expenses', 'Total units sold', 'Cost of production only'],
+        optionsTl: ['Net profit na hinati sa kabuuang kita, ipinahayag bilang porsyento', 'Kabuuang benta na bawas ang gastos', 'Kabuuang naibentang yunit', 'Gastos sa produksyon lamang'],
+        correctAnswer: 0,
+        explanation: 'Profit margin = (Net Profit ÷ Total Revenue) × 100. It shows what percentage of revenue is profit.',
+        explanationTl: 'Profit margin = (Net Profit ÷ Kabuuang Kita) × 100. Ipinapakita nito kung anong porsyento ng kita ang tubo.',
+        difficulty: 'medium'
+      },
+      // ── HARD ──
+      {
+        id: 86,
+        question: 'What is a feasibility study in agroentrepreneurship?',
+        questionTl: 'Ano ang feasibility study sa agroentrepreneurship?',
+        options: ['An analysis to determine if a farm business idea is viable and profitable', 'A list of farm equipment', 'A daily work log', 'A government permit'],
+        optionsTl: ['Isang pagsusuri upang matukoy kung ang ideya ng farm business ay posible at kapaki-pakinabang', 'Isang listahan ng kagamitan sa bukid', 'Isang pang-araw-araw na talaan ng trabaho', 'Isang permit ng gobyerno'],
+        correctAnswer: 0,
+        explanation: 'A feasibility study analyzes the viability, profitability, and risks of a proposed farm business.',
+        explanationTl: 'Ang feasibility study ay nag-aanalisa ng viability, profitability, at mga panganib ng isang proposed na farm business.',
+        difficulty: 'hard'
+      },
+      {
+        id: 87,
+        question: 'What is Return on Investment (ROI) in farm business?',
+        questionTl: 'Ano ang Return on Investment (ROI) sa farm business?',
+        options: ['Net profit divided by total investment, expressed as a percentage', 'Total sales only', 'Total expenses only', 'Number of crops harvested'],
+        optionsTl: ['Net profit na hinati sa kabuuang investment, ipinahayag bilang porsyento', 'Kabuuang benta lamang', 'Kabuuang gastos lamang', 'Bilang ng mga naaning pananim'],
+        correctAnswer: 0,
+        explanation: 'ROI = (Net Profit ÷ Total Investment) × 100. It measures the efficiency of an investment.',
+        explanationTl: 'ROI = (Net Profit ÷ Kabuuang Investment) × 100. Sinusukat nito ang kahusayan ng isang investment.',
+        difficulty: 'hard'
+      },
+      {
+        id: 88,
+        question: 'What is a cooperative in the context of Philippine agriculture?',
+        questionTl: 'Ano ang kooperatiba sa konteksto ng agrikultura sa Pilipinas?',
+        options: ['An organization owned and operated by members for mutual benefit', 'A government agency', 'A private corporation', 'A type of farm equipment'],
+        optionsTl: ['Isang organisasyon na pag-aari at pinapatakbo ng mga miyembro para sa mutual na benepisyo', 'Isang ahensya ng gobyerno', 'Isang pribadong korporasyon', 'Uri ng kagamitan sa bukid'],
+        correctAnswer: 0,
+        explanation: 'A cooperative is a member-owned organization that operates for the mutual benefit of all its members.',
+        explanationTl: 'Ang kooperatiba ay isang organisasyong pag-aari ng mga miyembro na nagpapatakbo para sa mutual na benepisyo ng lahat ng miyembro nito.',
+        difficulty: 'hard'
+      },
+      {
+        id: 89,
+        question: 'What is working capital in farm business management?',
+        questionTl: 'Ano ang working capital sa pamamahala ng farm business?',
+        options: ['Current assets minus current liabilities — funds for day-to-day operations', 'Total assets of the farm', 'Total loans of the business', 'Profit from last harvest'],
+        optionsTl: ['Current assets na bawas ang current liabilities — pondo para sa pang-araw-araw na operasyon', 'Kabuuang assets ng bukid', 'Kabuuang utang ng negosyo', 'Kita mula sa nakaraang pag-aani'],
+        correctAnswer: 0,
+        explanation: 'Working capital = Current Assets − Current Liabilities. It represents funds available for daily operations.',
+        explanationTl: 'Working capital = Current Assets − Current Liabilities. Kinakatawan nito ang mga pondong magagamit para sa pang-araw-araw na operasyon.',
+        difficulty: 'hard'
+      },
+      {
+        id: 90,
+        question: 'What is the purpose of a balance sheet in farm accounting?',
+        questionTl: 'Ano ang layunin ng balance sheet sa accounting ng bukid?',
+        options: ['To show the financial position by listing assets, liabilities, and equity', 'To track daily weather', 'To record crop yield only', 'To list all employees'],
+        optionsTl: ['Upang ipakita ang posisyong pinansyal sa pamamagitan ng paglilista ng assets, liabilities, at equity', 'Upang subaybayan ang pang-araw-araw na panahon', 'Upang i-record lamang ang ani', 'Upang ilista ang lahat ng empleyado'],
+        correctAnswer: 0,
+        explanation: 'A balance sheet shows a farm\'s financial position at a specific point in time: assets = liabilities + equity.',
+        explanationTl: 'Ang balance sheet ay nagpapakita ng posisyong pinansyal ng bukid sa isang tiyak na sandali: assets = liabilities + equity.',
+        difficulty: 'hard'
+      }
+    ]
+  },
 ];
