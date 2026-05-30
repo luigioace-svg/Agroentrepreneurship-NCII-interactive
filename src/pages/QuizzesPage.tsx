@@ -382,7 +382,6 @@ function EnumerationGame({ difficulty, onClose }: { difficulty: Difficulty; onCl
     </div>
   );
 }
-
 // ─────────────────────────────────────────────
 // COMPUTATION GAME
 // ─────────────────────────────────────────────
@@ -474,157 +473,78 @@ function ComputationGame({ difficulty, onClose }: { difficulty: Difficulty; onCl
 
 // ─────────────────────────────────────────────
 // MEMORY CARD GAME
-// Replace the duplicate ComputationGame block (the one under the
-// "// MEMORY CARD GAME" comment) in QuizzesPage.tsx with this component.
 // ─────────────────────────────────────────────
-
 function MemoryGame({ difficulty, onClose }: { difficulty: Difficulty; onClose: () => void }) {
   const pairs = memoryData.filter(m => m.difficulty === difficulty).slice(0, 8);
-
-  // Build a flat list of cards: each pair produces a TERM card and a DEF card
-  type MemoryCard = { id: string; pairId: number; label: string; type: 'term' | 'def' };
-  const [cards] = useState<MemoryCard[]>(() => {
-    const deck: MemoryCard[] = [];
-    pairs.forEach((p, i) => {
-      deck.push({ id: `t${i}`, pairId: i, label: p.term, type: 'term' });
-      deck.push({ id: `d${i}`, pairId: i, label: p.definition, type: 'def' });
-    });
-    // Fisher-Yates shuffle
-    for (let i = deck.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [deck[i], deck[j]] = [deck[j], deck[i]];
-    }
-    return deck;
+  const [cards, setCards] = useState(() => {
+    const deck = [...pairs.map(p => ({ ...p, type: 'term' as const })), ...pairs.map(p => ({ ...p, type: 'def' as const }))];
+    return deck.sort(() => Math.random() - 0.5).map((c, i) => ({ ...c, id: i, flipped: false, matched: false }));
   });
-
-  const [flipped, setFlipped] = useState<string[]>([]);   // up to 2 card ids
-  const [matched, setMatched] = useState<string[]>([]);   // all matched card ids
-  const [locked, setLocked] = useState(false);
+  const [selected, setSelected] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
   const [done, setDone] = useState(false);
   const { seconds, start, stop, format } = useTimer();
   useEffect(() => { start(); }, []);
 
-  const handleFlip = (card: MemoryCard) => {
-    if (locked) return;
-    if (flipped.includes(card.id)) return;
-    if (matched.includes(card.id)) return;
-    if (flipped.length === 2) return;
-
-    const newFlipped = [...flipped, card.id];
-    setFlipped(newFlipped);
-
-    if (newFlipped.length === 2) {
+  const flip = (id: number) => {
+    if (selected.length === 2) return;
+    const card = cards.find(c => c.id === id);
+    if (!card || card.flipped || card.matched) return;
+    const newCards = cards.map(c => c.id === id ? { ...c, flipped: true } : c);
+    setCards(newCards);
+    const newSelected = [...selected, id];
+    setSelected(newSelected);
+    if (newSelected.length === 2) {
       setMoves(m => m + 1);
-      const [a, b] = newFlipped.map(id => cards.find(c => c.id === id)!);
-      if (a.pairId === b.pairId && a.type !== b.type) {
-        // Match!
-        const newMatched = [...matched, a.id, b.id];
-        setMatched(newMatched);
-        setFlipped([]);
-        if (newMatched.length === cards.length) { setDone(true); stop(); }
+      const [a, b] = newSelected.map(sid => newCards.find(c => c.id === sid)!);
+      if (a.term === b.term && a.type !== b.type) {
+        const matched = newCards.map(c => newSelected.includes(c.id) ? { ...c, matched: true } : c);
+        setCards(matched);
+        setSelected([]);
+        if (matched.every(c => c.matched)) { setDone(true); stop(); }
       } else {
-        // No match — flip back after delay
-        setLocked(true);
-        setTimeout(() => { setFlipped([]); setLocked(false); }, 900);
+        setTimeout(() => {
+          setCards(prev => prev.map(c => newSelected.includes(c.id) ? { ...c, flipped: false } : c));
+          setSelected([]);
+        }, 1000);
       }
     }
   };
 
-  const restart = () => {
-    setFlipped([]);
-    setMatched([]);
-    setLocked(false);
-    setMoves(0);
-    setDone(false);
-  };
-
-  const isFlipped = (id: string) => flipped.includes(id) || matched.includes(id);
-  const isMatched = (id: string) => matched.includes(id);
-  const isWrong = (id: string) => flipped.length === 2 && flipped.includes(id) && !matched.includes(id);
-
   return (
     <div className="fixed inset-0 z-50 bg-forest/95 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-mist">
-          <div className="flex items-center gap-4">
-            <span className="text-forest font-semibold text-sm">
-              {matched.length / 2}/{pairs.length} matched
-            </span>
-            <span className="text-earth/60 text-sm">{moves} moves</span>
-          </div>
+          <span className="text-sage text-sm">Moves: {moves} | Matched: {cards.filter(c => c.matched).length / 2}/{pairs.length}</span>
           <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1 text-terracotta text-sm font-semibold">
-              <Clock className="w-4 h-4" />{format(seconds)}
-            </span>
+            <span className="flex items-center gap-1 text-terracotta text-sm font-semibold"><Clock className="w-4 h-4" />{format(seconds)}</span>
             <button onClick={onClose}><X className="w-5 h-5 text-earth/60" /></button>
           </div>
         </div>
-
         {!done ? (
-          <div className="p-5">
-            <p className="text-earth/60 text-xs text-center mb-4">
-              Flip two cards — match each <span className="font-semibold text-forest">term</span> with its <span className="font-semibold text-forest">definition</span>
-            </p>
-            {/* 4-column grid */}
-            <div className="grid grid-cols-4 gap-2">
-              {cards.map(card => {
-                const revealed = isFlipped(card.id);
-                const matched_ = isMatched(card.id);
-                const wrong = isWrong(card.id);
-
-                return (
-                  <button
-                    key={card.id}
-                    onClick={() => handleFlip(card)}
-                    disabled={revealed || locked}
-                    className={`
-                      relative h-20 rounded-xl text-xs font-medium transition-all duration-200 border-2 p-2 leading-tight
-                      ${!revealed
-                        ? 'bg-forest text-white border-forest hover:bg-sage hover:border-sage cursor-pointer'
-                        : matched_
-                          ? 'bg-green-100 border-green-400 text-green-800 cursor-default'
-                          : wrong
-                            ? 'bg-red-100 border-red-400 text-red-700'
-                            : 'bg-gold/20 border-gold text-forest cursor-default'
-                      }
-                    `}
-                  >
-                    {!revealed ? (
-                      <span className="text-white/60 text-lg">?</span>
-                    ) : (
-                      <span className="line-clamp-3">{card.label}</span>
-                    )}
-                    {revealed && (
-                      <span className={`absolute top-1 right-1.5 text-[9px] font-bold uppercase tracking-wide opacity-50`}>
-                        {card.type === 'term' ? 'T' : 'D'}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
+          <div className="p-4 grid grid-cols-4 gap-3">
+            {cards.map(card => (
+              <button key={card.id} onClick={() => flip(card.id)}
+                className={`aspect-square rounded-xl text-xs font-medium p-2 transition-all border-2 ${
+                  card.matched ? 'bg-green-100 border-green-400 text-green-800' :
+                  card.flipped ? 'bg-sage text-white border-sage' :
+                  'bg-forest text-forest border-forest hover:border-gold'
+                }`}>
+                {card.flipped || card.matched ? (
+                  <span className="text-center leading-tight">{card.type === 'term' ? card.term : card.definition}</span>
+                ) : (
+                  <span className="text-gold text-xl">🌾</span>
+                )}
+              </button>
+            ))}
           </div>
         ) : (
           <div className="p-8 text-center">
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h3 className="text-forest font-bold text-xl mb-1">All pairs matched!</h3>
-            <p className="text-earth/70 text-sm mb-1">Time: {format(seconds)}</p>
-            <p className="text-earth/70 text-sm mb-6">{moves} moves</p>
+            <h3 className="text-forest font-bold text-xl mb-2">All pairs found!</h3>
+            <p className="text-earth mb-6">{moves} moves | Time: {format(seconds)}</p>
             <div className="flex gap-3 justify-center">
-              <button
-                onClick={restart}
-                className="bg-sage text-white px-6 py-2.5 rounded-lg hover:bg-forest transition-colors"
-              >
-                Play Again
-              </button>
-              <button
-                onClick={onClose}
-                className="border border-earth/30 text-earth px-6 py-2.5 rounded-lg hover:bg-earth/5 transition-colors"
-              >
-                Close
-              </button>
+              <button onClick={onClose} className="bg-sage text-white px-6 py-2.5 rounded-lg hover:bg-forest transition-colors">Close</button>
             </div>
           </div>
         )}
@@ -632,7 +552,7 @@ function MemoryGame({ difficulty, onClose }: { difficulty: Difficulty; onClose: 
     </div>
   );
 }
-                                                     
+
 // ─────────────────────────────────────────────
 // DIFFICULTY SELECTOR
 // ─────────────────────────────────────────────
