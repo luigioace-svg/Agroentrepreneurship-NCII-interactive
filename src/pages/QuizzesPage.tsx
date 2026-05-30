@@ -41,10 +41,12 @@ function QuizModal({ categoryId, difficulty, onClose }: { categoryId: string; di
   // Map difficult/expert to hard since quizData only has easy/medium/hard
   const effectiveDifficulty = (difficulty === 'difficult' || difficulty === 'expert') ? 'hard' : difficulty;
   // Pull from ALL categories filtered by difficulty
-  const questions = quizCategories
+  const [questions] = useState(() =>
+  quizCategories
     .flatMap(c => c.questions)
     .filter((q: any) => !effectiveDifficulty || q.difficulty === effectiveDifficulty)
-    .sort(() => Math.random() - 0.5);
+    .sort(() => Math.random() - 0.5)
+);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answers, setAnswers] = useState<Record<number, number>>({});
